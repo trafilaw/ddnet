@@ -124,4 +124,34 @@ constexpr inline T in_range(T a, T upper)
 	return in_range(a, 0, upper);
 }
 
+// MEEEDDDDSKAALLIIINN
+/* smoothly sets the value to target, must be called every tick to do so;
+ * val is a pointer to a static float
+ * returns the newly calculated value */
+inline float smooth_set(float* val, float target, float delay, float RenderFrameTime)
+{
+	if(delay <= 0.0f)
+		delay = 0.01f;
+
+	delay *= (0.005f/RenderFrameTime);
+
+	if(delay < 1.0f || *val == target)
+		return *val;
+
+/*	if(snaprange)
+	{
+		if(*val > target * (1.0f - snaprange))
+			*val = target;
+		if(*val < target + snaprange)
+			*val = target;
+	}*/
+
+	if(*val < target)
+		*val += (target-*val)/delay;
+	if(*val > target)
+		*val -= (*val-target)/delay;
+
+	return *val;
+}
+
 #endif // BASE_MATH_H
