@@ -147,6 +147,10 @@ MACRO_CONFIG_INT(ClDummyHook, cl_dummy_hook, 0, 0, 1, CFGFLAG_CLIENT, "Whether d
 MACRO_CONFIG_INT(ClShowStartMenuImages, cl_show_start_menu_images, 1, 0, 1, CFGFLAG_CLIENT | CFGFLAG_SAVE, "Show start menu images")
 MACRO_CONFIG_INT(ClSkipStartMenu, cl_skip_start_menu, 0, 0, 1, CFGFLAG_CLIENT | CFGFLAG_SAVE, "Skip the start menu")
 
+// metzgerlin
+MACRO_CONFIG_INT(ClSmartZoom, cl_smart_zoom, 0, 0, 2, CFGFLAG_CLIENT|CFGFLAG_SAVE, "Zoom in/out in a smart way (0=off, 1=race only, 2=all mods)")
+MACRO_CONFIG_INT(ClSmartZoomVal, cl_smart_zoom_val, 100, 0, 1000, CFGFLAG_CLIENT|CFGFLAG_SAVE, "Percentage to multiply the base zooming intensity with")
+
 // server
 MACRO_CONFIG_INT(SvWarmup, sv_warmup, 0, 0, 0, CFGFLAG_SERVER, "Number of seconds to do warmup before round starts")
 MACRO_CONFIG_STR(SvMotd, sv_motd, 900, "", CFGFLAG_SERVER, "Message of the day to display for the clients")

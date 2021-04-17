@@ -102,6 +102,27 @@ void CCamera::OnRender()
 		OnReset();
 	}
 
+	/* meskuli  <3 */
+	// smart zoom
+	float TotalZoom = m_WantedZoom;
+	vec2 Vel(0);
+	if(m_pClient->m_Snap.m_SpecInfo.m_Active)
+		Vel = mix(m_pClient->m_aClients[m_pClient->m_Snap.m_SpecInfo.m_SpectatorID].m_PrevPredicted.m_Vel, m_pClient->m_aClients[m_pClient->m_Snap.m_SpecInfo.m_SpectatorID].m_Predicted.m_Vel, Client()->IntraGameTick()); // TODO: fix this!
+	else if(m_pClient->m_Snap.m_pLocalCharacter)
+		Vel = vec2(m_pClient->m_Snap.m_pLocalCharacter->m_VelX, m_pClient->m_Snap.m_pLocalCharacter->m_VelY);
+
+	if(Client()->State() == IClient::STATE_ONLINE && Vel != vec2(0))
+	{
+		if((g_Config.m_ClSmartZoom == 1 && (IsRace(Client()->GetServerInfo()) || IsDDNet(Client()->GetServerInfo()))) ||
+				(g_Config.m_ClSmartZoom == 2 && ZoomAllowed()))
+		{
+			float ExtraZoom = (length(Vel) / 24000.0f) * ((float)g_Config.m_ClSmartZoomVal/100.0f);
+			TotalZoom = min(20.0f, TotalZoom+ExtraZoom); // don't go nuts
+		}
+	}
+
+	smooth_set(&m_Zoom, TotalZoom, 105.0f, Client()->RenderFrameTime());
+
 	// update camera center
 	if(m_pClient->m_Snap.m_SpecInfo.m_Active && !m_pClient->m_Snap.m_SpecInfo.m_UsePosition)
 	{
