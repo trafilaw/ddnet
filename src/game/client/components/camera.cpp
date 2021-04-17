@@ -104,7 +104,7 @@ void CCamera::OnRender()
 
 	/* meskuli  <3 */
 	// smart zoom
-	float TotalZoom = m_WantedZoom;
+	float TotalZoom = m_Zoom;
 	vec2 Vel(0, 0);
 	if(m_pClient->m_Snap.m_pLocalCharacter)
 		Vel = vec2(m_pClient->m_Snap.m_pLocalCharacter->m_VelX, m_pClient->m_Snap.m_pLocalCharacter->m_VelY);

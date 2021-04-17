@@ -38,7 +38,6 @@ public:
 	bool m_ZoomSet;
 	float m_Zoom;
 	float m_ZoomSmoothingTarget;
-	float m_WantedZoom;
 
 	CCamera();
 	virtual void OnRender();
