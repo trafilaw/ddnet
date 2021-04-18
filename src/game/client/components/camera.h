@@ -38,6 +38,7 @@ public:
 	bool m_ZoomSet;
 	float m_Zoom;
 	float m_ZoomSmoothingTarget;
+	float m_DoMeskalinKids;
 
 	CCamera();
 	virtual void OnRender();
