@@ -104,7 +104,7 @@ void CCamera::OnRender()
 
 	/* meskuli  <3 */
 	// smart zoom
-	float TotalZoom = m_Zoom;
+	float TotalZoom = m_DoMeskalinKids;
 	vec2 Vel(0, 0);
 	if(m_pClient->m_Snap.m_pLocalCharacter)
 		Vel = vec2(m_pClient->m_Snap.m_pLocalCharacter->m_VelX, m_pClient->m_Snap.m_pLocalCharacter->m_VelY);
@@ -209,6 +209,7 @@ void CCamera::OnReset()
 {
 	m_Zoom = pow(ZoomStep, g_Config.m_ClDefaultZoom - 10);
 	m_Zooming = false;
+	m_DoMeskalinKids = m_Zoom;
 }
 
 void CCamera::ConZoomPlus(IConsole::IResult *pResult, void *pUserData)
