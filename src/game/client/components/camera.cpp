@@ -25,6 +25,7 @@ CCamera::CCamera()
 	m_Zoom = 1.0f;
 	m_Zooming = false;
 	m_ForceFreeviewPos = vec2(-1, -1);
+	m_DoMeskalinKids = m_Zoom;
 }
 
 float CCamera::ZoomProgress(float CurrentTime) const
@@ -63,6 +64,10 @@ void CCamera::ChangeZoom(float Target)
 		float Progress = ZoomProgress(Now);
 		Current = m_ZoomSmoothing.Evaluate(Progress);
 		Derivative = m_ZoomSmoothing.Derivative(Progress);
+	}
+	else
+	{
+		m_DoMeskalinKids = m_Zoom;
 	}
 
 	m_ZoomSmoothingTarget = Target;
@@ -109,16 +114,16 @@ void CCamera::OnRender()
 	if(m_pClient->m_Snap.m_pLocalCharacter)
 		Vel = vec2(m_pClient->m_Snap.m_pLocalCharacter->m_VelX, m_pClient->m_Snap.m_pLocalCharacter->m_VelY);
 
-	if(Client()->State() == IClient::STATE_ONLINE && Vel != vec2(0, 0))
+	if(g_Config.m_ClSmartZoom == 1 && GameClient()->m_GameInfo.m_AllowZoom)
 	{
-		if((g_Config.m_ClSmartZoom == 1 || g_Config.m_ClSmartZoom == 2) && GameClient()->m_GameInfo.m_AllowZoom)
+		if(Client()->State() == IClient::STATE_ONLINE && Vel != vec2(0, 0))
 		{
 			float ExtraZoom = (length(Vel) / 24000.0f) * ((float)g_Config.m_ClSmartZoomVal/100.0f);
 			TotalZoom = minimum(20.0f, TotalZoom+ExtraZoom); // don't go nuts
+			smooth_set(&m_Zoom, TotalZoom, 105.0f, Client()->RenderFrameTime());
 		}
 	}
 
-	smooth_set(&m_Zoom, TotalZoom, 105.0f, Client()->RenderFrameTime());
 
 	// update camera center
 	if(m_pClient->m_Snap.m_SpecInfo.m_Active && !m_pClient->m_Snap.m_SpecInfo.m_UsePosition)
